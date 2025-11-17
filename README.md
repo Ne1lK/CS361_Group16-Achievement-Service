@@ -13,7 +13,8 @@ POST /events is used for requesting data.
     {
     "type": "search"
     }
- Recieving Data
+# Recieving Data
+    - gets all unlocked and locked acheivements and counters.
 GET /achievements is used to recieve a JSON containing locked and unlocked achievements as well as event trackers, can all be parsed as needed.
 
  Example Recieve
@@ -32,10 +33,9 @@ GET /achievements is used to recieve a JSON containing locked and unlocked achie
         }
     }
 
-
 ## Using this on your project
 This function is how you are going to communicate with the dashboard, from here you can call it on different acheivement types that you add.
-
+place this in your main program.
 ```
 const achievementHost = "http://localhost:8001";
 
@@ -53,11 +53,14 @@ async function sendAchievement(type) {
   return res.json();
 ```
 
-Where `event_type` is one of:
+Where `type` is one of:
 - `"search"` - Record a search event
 - `"click"` - Record a click event
-- note that you can go into the acheivement.js code and add your own events in the same format and call them 
-
-### UML
+- note that you can go into the acheivement.js code and add your own events in the same format and call them
+      add new counter in state.counters
+      add a new case in applyEvent(type)
+      add a new achievement in the achievements array
+      place sendAchievement("your new type");
+  ### UML
 
 <img width="766" height="464" alt="uml" src="https://github.com/user-attachments/assets/62dda865-6f5e-44d1-9bf5-d04e20e80e61" />
