@@ -3,7 +3,7 @@
 Repo for Achivement microservice for sprint 2
 
 # Requesting Data 
-POST /events is used for sending events to the acheivement service. This is done by making a post request to http://localhost8001/events
+POST /events is used for sending events to the acheivement service. This is done by making a post request to http://localhost:8001/events
 
 # Example Request 
 const achievementHost = "http://localhost:8001";
@@ -53,7 +53,7 @@ GET /achievements is used to recieve a JSON containing locked and unlocked achie
 ```
 
 ## Using this on your project
-This function is how you are going to communicate with the dashboard, from here you can call it on different acheivement types that you add.
+This function is how you are going to communicate with the achievement service, from here you can call it on different acheivement types that you add.
 place this in your main program.
 ```
 const achievementHost = "http://localhost:8001";
