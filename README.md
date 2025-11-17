@@ -85,42 +85,7 @@ Content-Type: application/json
 
 ## UML Sequence Diagram
 
-The following sequence diagram illustrates how a client application interacts with the Achievement Service to track events and retrieve achievement status:
 
-Client Application          Achievement Service
-        |                            |
-        |--1. User Action Occurs-----|
-        |    (e.g., search, click)   |
-        |                            |
-        |--2. POST /events---------->|
-        |    {"type": "search"}      |
-        |                            |
-        |<--3. Process Event---------|
-        |    - Increment counter     |
-        |    - Check achievement     |
-        |    - Unlock if criteria met|
-        |                            |
-        |<--4. Response 200 OK-------|
-        |    {ok: true, counters,    |
-        |     unlocked: [...]}       |
-        |                            |
-        |                            |
-        |--5. Request Achievements-->|
-        |    GET /achievements       |
-        |                            |
-        |<--6. Query State-----------|
-        |    - Filter unlocked items |
-        |    - Filter locked items   |
-        |    - Include counters      |
-        |                            |
-        |<--7. Response 200 OK-------|
-        |    {unlocked: [...],       |
-        |     locked: [...],         |
-        |     counters: {...}}       |
-        |                            |
-        |--8. Display Achievements---|
-        |    (UI updates)            |
-        |                            |
 ```
 
 ### Detailed Flow Description
@@ -146,97 +111,7 @@ Client Application          Achievement Service
 
 ---
 
-## Integration Example
 
-```javascript
-// Complete integration example
-const achievementHost = 'http://localhost:8001';
-
-async function trackUserAction(actionType) {
-  try {
-    // Step 1: Send event to track action
-    const eventResponse = await fetch(`${achievementHost}/events`, {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type: actionType })
-    });
-
-    if (!eventResponse.ok) throw new Error('Failed to track event');
-
-    // Step 2: Retrieve updated achievement status
-    const achievementResponse = await fetch(`${achievementHost}/achievements`);
-    if (!achievementResponse.ok) throw new Error('Failed to fetch achievements');
-
-    const achievements = await achievementResponse.json();
-
-    // Step 3: Update UI with results
-    displayAchievements(achievements.unlocked, achievements.locked);
-    updateCounters(achievements.counters);
-
-    return achievements;
-  } catch (err) {
-    console.error('Error tracking action:', err.message);
-  }
-}
-
-// Usage when user performs action
-document.getElementById('searchButton').addEventListener('click', () => {
-  trackUserAction('search');
-});
-```
-
----
 
 ## Achievement Configuration
 
-Achievements are defined in the service with rules that automatically trigger when conditions are met:
-
-```javascript
-const achievements = [
-  { 
-    id: 'test1', 
-    name: 'achievement test1', 
-    check: s => s.counters.searches >= 1 
-  }
-];
-```
-
-To add new achievements, modify the `achievements` array in `achievements.js` with:
-- **id:** Unique identifier for the achievement
-- **name:** Display name for users
-- **check:** Function that evaluates state against unlock criteria
-```
-
-```
-const achivementHost = 'http://localhost:8001';
-
-async function sendAchievement(type) {
-  const res = await fetch(`${achivementHost}/events`, {
-    method: 'POST',
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ type })
-  });
-
-  if (!res.ok) {
-    const txt = await res.text();
-    throw new Error(`HTTP ${res.status}: ${txt}`);
-  }
-
-  return res.json();
-}
-
-#usage example
-sendAchievement("search");
-
-
-eventButton.onclick = async () => {
-    output.textContent = "Sending event...";
-
-    try {
-      const data = await sendAchievement("search");
-      output.textContent = "Event sent:\n" + JSON.stringify(data, null, 2);
-    } catch (err) {
-      output.textContent = "Error: " + err.message;
-    }
-  };
-```
