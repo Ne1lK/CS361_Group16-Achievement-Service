@@ -18,6 +18,7 @@ POST /events is used for requesting data.
 GET /achievements is used to recieve a JSON containing locked and unlocked achievements as well as event trackers, can all be parsed as needed.
 
  Example Recieve
+ ```
     {
     "unlocked": [
         {
@@ -32,7 +33,7 @@ GET /achievements is used to recieve a JSON containing locked and unlocked achie
         "clicks": 0
         }
     }
-
+```
 ## Using this on your project
 This function is how you are going to communicate with the dashboard, from here you can call it on different acheivement types that you add.
 place this in your main program.
