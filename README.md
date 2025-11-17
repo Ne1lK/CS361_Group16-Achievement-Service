@@ -13,10 +13,10 @@ POST /events is used for requesting data.
     {
     "type": "search"
     }
-# Recieving Data
+ Recieving Data
 GET /achievements is used to recieve a JSON containing locked and unlocked achievements as well as event trackers, can all be parsed as needed.
 
-# Example Recieve
+ Example Recieve
     {
     "unlocked": [
         {
