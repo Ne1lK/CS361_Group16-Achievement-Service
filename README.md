@@ -38,14 +38,13 @@ This function is how you are going to communicate with the dashboard, from here 
 
 ### Needs finishing
 
+```
 '{ id: 'test1', name: 'achievement test1', check: s => s.counters.searches >= 1 }'
-
+```
 
 ```
 const achivementHost = 'http://localhost:8001';
-```
 
-```
 async function sendAchievement(type) {
   const res = await fetch(`${achivementHost}/events`, {
     method: 'POST',
