@@ -3,7 +3,7 @@
 Repo for Achivement microservice for sprint 2
 
 # Requesting Data 
-POST /events is used for requesting data.
+POST /events is used for sending events to the acheivement service.
 
 # Example Request
     POST /events HTTP/1.1
@@ -57,7 +57,7 @@ async function sendAchievement(type) {
 Where `type` is one of:
 - `"search"` - Record a search event
 - `"click"` - Record a click event
-- note that you can go into the acheivement.js code and add your own events in the same format and call them
+- note that you can go into the acheivement.js code and add your own events in the same format and call them but currently only has search bar and click events
      ```
       - add new counter in state.counters
       - add a new case in applyEvent(type)
