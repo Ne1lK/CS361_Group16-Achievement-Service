@@ -3,37 +3,55 @@
 Repo for Achivement microservice for sprint 2
 
 # Requesting Data 
-POST /events is used for sending events to the acheivement service.
+POST /events is used for sending events to the acheivement service. This is done by making a post request to http://localhost8001/events
 
-# Example Request
-    POST /events HTTP/1.1
-    Host: localhost:8001
-    Content-Type: application/json
+# Example Request 
+const achievementHost = "http://localhost:8001";
 
-    {
-    "type": "search"
-    }
+async function sendAchievement(type) {
+  const res = await fetch(`${achievementHost}/events`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ type })
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+  }
+
+  return res.json();  // contains updated counters + unlocked achievements
+}
+
+
+sendAchievement("search");
+
 # Recieving Data
     - gets all unlocked and locked acheivements and counters.
-GET /achievements is used to recieve a JSON containing locked and unlocked achievements as well as event trackers, can all be parsed as needed.
-
- Example Recieve
- ```
-    {
-    "unlocked": [
-        {
-        "id": "test1",
-        "name": "achievement test1"
-        }
-    ],
-    "locked": [],
-    "counters": 
-        {
-        "searches": 1,
-        "clicks": 0
-        }
-    }
+GET /achievements is used to recieve a JSON containing locked and unlocked achievements as well as event trackers, can all be parsed as needed. will respond with something such as:
 ```
+{
+  "unlocked": [
+    {
+      "id": "test1",
+      "name": "achievement test1"
+    }
+  ],
+  "locked": [],
+  "counters": {
+    "searches": 1,
+    "clicks": 0
+  }
+}
+```
+ Example Recieve: get request to  http://localhost8001/achievements
+ ```
+   async function getAchievementStatus() {
+  const res = await fetch("http://localhost:8001/achievements");
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();  // { unlocked, locked, counters }
+}
+```
+
 ## Using this on your project
 This function is how you are going to communicate with the dashboard, from here you can call it on different acheivement types that you add.
 place this in your main program.
