@@ -72,3 +72,7 @@ Where `event_type` is one of:
 - `"click"` - Record a click event
 
 ### Example usage
+
+### UML
+
+<img width="766" height="464" alt="uml" src="https://github.com/user-attachments/assets/62dda865-6f5e-44d1-9bf5-d04e20e80e61" />
