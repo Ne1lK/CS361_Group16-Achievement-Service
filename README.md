@@ -43,7 +43,9 @@ This function is how you are going to communicate with the dashboard, from here 
 
 ```
 const achivementHost = 'http://localhost:8001';
+```
 
+```
 async function sendAchievement(type) {
   const res = await fetch(`${achivementHost}/events`, {
     method: 'POST',
