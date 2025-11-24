@@ -9,9 +9,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
-// tracking/storing everything, could be upgraded to db in future. unlocked stores unlocked acheivements
-// when adding new events to track, add countere here.
-let state = {
+// tracking/storing everything (achievement counters + unlocked list)
+let achievementState = {
   counters: {
     searches: 0,
     clicks: 0
@@ -19,46 +18,41 @@ let state = {
   unlocked: []
 };
 
-// Achievement rules - when adding new events add the acheviement and condition here.
+// Achievement rules - when adding new events add the achievement and condition here.
 const achievements = [
   { id: 'test1', name: 'achievement test1', check: s => s.counters.searches >= 1 }
 ];
 
 // Check and unlock achievements
 function checkAchievements() {
-  for (const a of achievements) {
-    if (!state.unlocked.includes(a.id) && a.check(state)) {
-      state.unlocked.push(a.id);
+  for (const achievement of achievements) {
+    if (!achievementState.unlocked.includes(achievement.id) && achievement.check(achievementState)) {
+      achievementState.unlocked.push(achievement.id);
     }
   }
 }
 
-// Return achievement status in JSON form to test
 app.get('/achievements', (req, res) => {
-  const unlocked = achievements.filter(a => state.unlocked.includes(a.id));
-  const locked = achievements.filter(a => !state.unlocked.includes(a.id));
-  res.json({ unlocked, locked, counters: state.counters });
+  const unlocked = achievements.filter(achievement => achievementState.unlocked.includes(achievement.id));
+  const locked = achievements.filter(achievement => !achievementState.unlocked.includes(achievement.id));
+  res.json({ unlocked, locked, counters: achievementState.counters });
 });
 
-// Receive events from test program or dashboard
 app.post('/events', (req, res) => {
   const { type } = req.body || {};
   if (!type) return res.status(400).json({ error: 'Missing event type' });
 
-  applyEvent(type);
-  res.json({ ok: true, counters: state.counters, unlocked: state.unlocked });
+  processEvent(type);
+  res.json({ ok: true, counters: achievementState.counters, unlocked: achievementState.unlocked });
 });
 
-// Handle route errors
-app.use((req, res) => res.status(404).json({ error: 'Not found' }));
-
-// Update counters- when adding new event add it here as well
-function applyEvent(type) {
+// Update counters
+function processEvent(type) {
   if (type === 'search') {
-    state.counters.searches++;
+    achievementState.counters.searches++;
   }
   if (type === 'click') {
-    state.counters.clicks++;
+    achievementState.counters.clicks++;
   }
 
   checkAchievements();

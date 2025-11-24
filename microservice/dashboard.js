@@ -1,9 +1,9 @@
 const ACHIEVE_URL = "http://localhost:8001";
-const output = document.getElementById("achieveData");
+const achievementOutputContainer = document.getElementById("achieveData");
 const refreshBtn = document.getElementById("refresh");
 
 async function loadAchievements() {
-  output.textContent = "Loading...";
+  achievementOutputContainer.textContent = "Loading...";
 
   try {
     const res = await fetch(`${ACHIEVE_URL}/achievements`);
@@ -13,16 +13,18 @@ async function loadAchievements() {
     render(data);
 
   } catch (err) {
-    output.textContent = "Failed: " + err.message;
+    achievementOutputContainer.textContent = "Failed: " + err.message;
   }
 }
-//Converts JSON into html 
+
 function render({ unlocked, locked, counters }) {
-  output.innerHTML = `
+  achievementOutputContainer.innerHTML = `
     <h3>Unlocked</h3>
-    ${unlocked.length 
-      ? `<ul>${unlocked.map(a => `<li>${a.name}</li>`).join("")}</ul>`
-      : `<p>None unlocked yet.</p>`}
+    ${
+      unlocked.length 
+        ? `<ul>${unlocked.map(a => `<li>${a.name}</li>`).join("")}</ul>`
+        : `<p>None unlocked yet.</p>`
+    }
 
     <h3>Locked</h3>
     <ul>${locked.map(a => `<li>${a.name}</li>`).join("")}</ul>
