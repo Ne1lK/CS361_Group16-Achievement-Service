@@ -9,8 +9,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
-// tracking/storing everything, could be upgraded to db in future. unlocked stores unlocked acheivements
-// when adding new events to track, add countere here.
+// In-memory state object storing event counters and unlocked achievements.
 let state = {
   counters: {
     searches: 0,
@@ -33,7 +32,6 @@ function checkAchievements() {
   }
 }
 
-// Return achievement status in JSON form to test
 app.get('/achievements', (req, res) => {
   const unlocked = achievements.filter(a => state.unlocked.includes(a.id));
   const locked = achievements.filter(a => !state.unlocked.includes(a.id));
